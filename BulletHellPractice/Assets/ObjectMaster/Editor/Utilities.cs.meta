@@ -1,0 +1,26 @@
+fileFormatVersion: 2
+guid: 45b9f3c5b10134640a6ee28202742d22
+labels:
+- ObjectMaster
+- Tool
+- LevelDesign
+- Utility
+- Editor
+- Level
+- Helper
+- Toolbar
+- ConjuredGraphics
+- Design
+- Rename
+- Replace
+- Random
+- Group
+- Scatter
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
