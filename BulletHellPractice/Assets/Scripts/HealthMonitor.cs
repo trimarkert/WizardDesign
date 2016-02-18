@@ -6,10 +6,10 @@ public class HealthMonitor : MonoBehaviour
 {
 	public GameObject playerRef;
 
-	/*s
+	/**
 	 * Simple script designed to manage the health information of the player
 	 * Should display health someway on the GUI
-	 */
+	 * */
 	void LateUpdate () 
 	{
 		//As long as a player is in the scene you should find it and set the health
