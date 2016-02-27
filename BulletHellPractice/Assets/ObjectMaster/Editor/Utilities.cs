@@ -3,15 +3,14 @@ using System.Collections;
 using UnityEditor;
 using System;
 
-// OBJECTMASTER 1.4.1 Unity Plugin
-// Created by Ryan Miller ryan@conjuredgraphics.com
+// OBJECTMASTER 1.4.2 Unity Plugin
+// Created by Ryan Miller ryan@reptoidgames.com
 
 namespace ObjectMaster
 {
     [ExecuteInEditMode]
     public class Utilities : Editor
     {
-
 		#region CopyAndPaste
 		[MenuItem("Edit/ObjectMaster/Copy/",  false, 1)]
 		public static void MenuCopy() {}
@@ -554,7 +553,6 @@ namespace ObjectMaster
 					aT.transform.position = pivotPosition;
 					aT.transform.rotation = Quaternion.Euler(0, UnityEngine.Random.Range(0, 360), 0);
 					aT.transform.Translate(aT.transform.forward * UnityEngine.Random.Range(0, scatterDistance), Space.World);
-					//aT.transform.Translate (Vector3.up * scatterDistance);
 					aT.transform.rotation = originalRotation;
 					GroundTransform(aT);
 				}
@@ -586,7 +584,6 @@ namespace ObjectMaster
 					aT.transform.position = pivotPosition;
 					aT.transform.rotation = Quaternion.Euler(UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360), UnityEngine.Random.Range(0, 360));
 					aT.transform.Translate(aT.transform.forward * UnityEngine.Random.Range(0, scatterDistance), Space.World);
-					//aT.transform.Translate (Vector3.up * scatterDistance, Space.World);
 					aT.transform.rotation = originalRotation;
 					GroundTransform(aT);
 				}
@@ -1197,7 +1194,7 @@ namespace ObjectMaster
         {
             // Get existing open window or if none, make a new one:
             FindReplaceNames window = (FindReplaceNames)EditorWindow.GetWindow(typeof(FindReplaceNames));
-#if UNITY_4_6
+#if UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5_0
 			window.title = "Replace Names";
 #else
 			window.titleContent = new GUIContent ("Replace Names");
@@ -1265,7 +1262,7 @@ namespace ObjectMaster
 			// Get existing open window or if none, make a new one:
 			FindReplaceObjects window = (FindReplaceObjects)EditorWindow.GetWindow(typeof(FindReplaceObjects));
 			
-			#if UNITY_4_6
+			#if UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5_0
 			window.title = "Replace Objects";
 			#else
 			window.titleContent = new GUIContent ("Replace Objects");
@@ -1333,7 +1330,7 @@ namespace ObjectMaster
 			// Get existing open window or if none, make a new one:
 			RenameMaster window = (RenameMaster)EditorWindow.GetWindow(typeof(RenameMaster));
 			
-			#if UNITY_4_6
+			#if UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5_0
 			window.title = "Rename";
 			#else
 			window.titleContent = new GUIContent ("Rename");

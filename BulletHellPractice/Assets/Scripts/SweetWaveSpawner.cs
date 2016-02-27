@@ -21,7 +21,7 @@ public class SweetWaveSpawner : MonoBehaviour {
 		//For developer reference and identification by other methods
 		public string name;
 		//The enemy object to be spawned (why does this work as a transform?
-		public Transform enemy;
+		public Transform[] enemies;
 		//How many instances of the enemy to spawn
 		public int count;
 		//The delay between each individual spawn call
@@ -45,8 +45,12 @@ public class SweetWaveSpawner : MonoBehaviour {
 	//The fixed rate at which we check to see if enemies are still alive
 	//relevant code in update() and enemyalive()
 	private float searchCountdown = 1.0f;
-
-
+	//The amount of enemies in the final wave
+	public int finalWaveCount = 20;
+	//Time between individual spawns in the final wave
+	public float finalSpawnDelay = 1f;
+	//When you complete the final wave this is triggered to signify the demo is done.
+	private bool finalDone = false;
 	void Start()
 	{
 		if(spawnPoints.Length == 0)
@@ -66,7 +70,6 @@ public class SweetWaveSpawner : MonoBehaviour {
 			{
 				//begin a new wave
 				WaveCompleted();
-
 			}
 			else
 			{
@@ -74,9 +77,7 @@ public class SweetWaveSpawner : MonoBehaviour {
 				//because the state is waiting and there are still enemies to deal with.
 				return;
 			}
-
 		}
-
 		if(waveCountdown <= 0)
 		{
 			if(curState != SpawnState.SPAWNING)
@@ -118,35 +119,37 @@ public class SweetWaveSpawner : MonoBehaviour {
 		//reset appropriate variables to correct numbers
 		curState = SpawnState.COUNTING;
 		waveCountdown = timeBetweenWaves;
-
+		//If the final wave is done then you win!
+		if(finalDone)
+		{
+			//This should be expanded to go to a dif win screen.
+			Application.LoadLevel(2);
+		}
+		//If you run out of waves, start the final wave!
 		if(nextWave + 1 > waves.Length -1)
 		{
-			nextWave = 0;
-			//Possible to transition to win screen
-			Debug.Log ("All Waves Complete!... looping");
+			StartCoroutine(SpawnFinalWave());
 		}
 		else
 		{
 			nextWave ++;
 		}
 	}
-
-
-
 	/**Spawns enemies and waits a short time in between spawning
 	* should be expanded to use different spwan points so we can make
 	* different shapes and what not with the spawn pattern.
 	* @param _wave: The wave object that is used for spawning
 	*/
-	IEnumerator SpawnWave(Wave _wave)
+	IEnumerator SpawnWave(Wave curWave)
 	{
 		//now we are actually spawning
 		curState = SpawnState.SPAWNING;
 		//spawn things based on number of enemies we want to spawn
-		for(int i = 0; i < _wave.count; i++)
+		for(int i = 0; i < curWave.count; i++)
 		{
-			SpawnEnemy (_wave.enemy);
-			yield return new WaitForSeconds(_wave.indivSpawnDelay);
+			int picker = i % curWave.enemies.Length;
+			SpawnEnemy (curWave.enemies[picker]);
+			yield return new WaitForSeconds(curWave.indivSpawnDelay);
 
 		}
 
@@ -162,14 +165,26 @@ public class SweetWaveSpawner : MonoBehaviour {
 	 * */
 	void SpawnEnemy(Transform _enemy)
 	{
-		//Just a placeholder 
-		//spawn enemy
-		Debug.Log ("Spawning Enemy: " + _enemy.name);
-
-
 		Transform spawnPnt = spawnPoints[Random.Range(0, spawnPoints.Length)];
 		Instantiate (_enemy, spawnPnt.position, spawnPnt.rotation);
+	}
+	/**
+	 * Spawns epic final wave. Currently spwans a mix of all enemy types from the waves available but 
+	 * could easily be modified.
+	 * */
+	IEnumerator SpawnFinalWave()
+	{
+		curState = SpawnState.SPAWNING;
+		for(int i = 0; i < finalWaveCount; i++)
+		{
+			int picker = i % waves.Length;
+			SpawnEnemy(waves[picker].enemies[0]);
+			yield return new WaitForSeconds(finalSpawnDelay);
+		}
 
+		curState = SpawnState.WAITING;
+		finalDone = true;
+		yield break;
 
 	}
 }

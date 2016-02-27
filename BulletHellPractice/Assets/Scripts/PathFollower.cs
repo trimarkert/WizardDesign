@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class PathFollower : MonoBehaviour {
 	//Waypoints to be used for pathing
 	public GameObject[] wayPntObjects;
-	private List<Transform> wayPntsList;
-	private Transform[] wayPnts;
+	public List<Vector3> wayPntsList;
+	public Vector3[] wayPnts;
 
 	//Speed that the character will move
 	public float speed;
@@ -19,21 +19,22 @@ public class PathFollower : MonoBehaviour {
 	void Start () {
 		foreach(GameObject curObj in wayPntObjects)
 		{
-			Transform tempTrans = curObj.GetComponent<Transform>();
-			wayPntsList.Add(tempTrans);
+			Vector3 tempPos = curObj.GetComponent<Transform>().position;
+			wayPntsList.Add(tempPos);
 		}
 		wayPnts = wayPntsList.ToArray();
 	
 	}
-	
-	// Update is called once per frame
+	/**
+	 * 
+	 * */
 	void Update () {
 		if(currentPoint < wayPnts.Length)
 		{
 			//
-			float dist = Vector3.Distance(wayPnts[currentPoint].position, transform.position);
-			transform.position = Vector3.MoveTowards(transform.position, wayPnts[currentPoint].position,speed * Time.deltaTime);
-			transform.LookAt(wayPnts[currentPoint].position);
+			float dist = Vector3.Distance(wayPnts[currentPoint], transform.position);
+			transform.position = Vector3.MoveTowards(transform.position, wayPnts[currentPoint], speed * Time.deltaTime);
+			transform.LookAt(wayPnts[currentPoint]);
 
 			//Logic to change waypoints
 			if(dist <= reachDist)

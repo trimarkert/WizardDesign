@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class SimpleFollow : MonoBehaviour {
 	public Transform followTarget;
@@ -12,8 +15,15 @@ public class SimpleFollow : MonoBehaviour {
 	void Update () {
 		if(followTarget == null && GameObject.FindGameObjectWithTag("Player"))
 		{
-				GameObject firstPlayer = GameObject.FindGameObjectWithTag("Player");
-				followTarget = firstPlayer.transform;
+				GameObject nextPlayer = GameObject.FindGameObjectWithTag("Player");
+				//Found this little nugget to help prevent "ghost clones" from messing with your searches later on
+				//One bad thing is that it only works in the unity editor, will have to test to see if builds 
+				//still get the ghost clone problem
+#if UNITY_EDITOR
+				Selection.activeObject = nextPlayer;
+#endif
+				//Set the next follow target of course
+				followTarget = nextPlayer.transform;
 		}
 		if(followTarget != null)
 		{
@@ -22,7 +32,9 @@ public class SimpleFollow : MonoBehaviour {
 		                                  followTarget.position.z + offsetZ);
 		}
 	}
-
+	/**
+	 * Switches the follow target manually. could be used to do some rudementary cut scenes.
+	 * */
 	public void SetFollowTarget(Transform nextTarget)
 	{
 		followTarget = nextTarget;

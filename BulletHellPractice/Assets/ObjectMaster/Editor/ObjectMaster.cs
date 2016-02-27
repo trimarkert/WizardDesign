@@ -2,8 +2,8 @@
 using System.Collections;
 using UnityEditor;
 
-// OBJECTMASTER 1.4.1 Unity Plugin
-// Created by Ryan Miller ryan@conjuredgraphics.com
+// OBJECTMASTER 1.4.2 Unity Plugin
+// Created by Ryan Miller ryan@reptoidgames.com
 
 namespace ObjectMaster {
 
@@ -16,13 +16,13 @@ namespace ObjectMaster {
 			//Show existing window instance. If one doesn't exist, make one.
 			EditorWindow bar = EditorWindow.GetWindow(typeof(ObjectMaster));
 
-#if UNITY_4_6
+#if UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5_0
 			bar.title = "ObjectMaster";
 #else
 			bar.titleContent = new GUIContent ("ObjectMaster");
 #endif
-			bar.minSize = new Vector2(100, 170);
-			bar.maxSize = new Vector2(100, 2000);
+			bar.minSize = new Vector2(200, 500);
+			bar.maxSize = new Vector2(350, 2000);
 		}
 
 		#endregion
@@ -91,7 +91,7 @@ namespace ObjectMaster {
 
 			GUI.skin = omSkin;
 
-			GUILayout.Label ("ObjectMaster 1.4");
+			GUILayout.Label ("ObjectMaster 1.4.2");
 
 			#region General
 
@@ -115,7 +115,7 @@ namespace ObjectMaster {
 				}
 
 				GUILayout.BeginHorizontal();
-				if (GUILayout.Button ("Join Nearby Neighbors")) {
+				if (GUILayout.Button ("Join Nearby")) {
 					Utilities.ChangeBuddy (stickRadius);
 					Utilities.Buddy ();
 				}
@@ -170,9 +170,6 @@ namespace ObjectMaster {
 				zeroAffect = (AffectType)EditorGUILayout.EnumPopup (zeroAffect);
 				GUILayout.EndHorizontal();
 
-
-
-				
 				GUILayout.EndVertical ();
 			}
 
@@ -252,7 +249,7 @@ namespace ObjectMaster {
 				if (GUILayout.Button("Find & Replace Names")) {
 					// Get existing open window or if none, make a new one:
 					FindReplaceNames window = (FindReplaceNames)EditorWindow.GetWindow(typeof(FindReplaceNames));
-					#if UNITY_4_6
+					#if UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5_0
 					window.title = "Replace Names";
 					#else
 					window.titleContent = new GUIContent ("Replace Names");
@@ -263,7 +260,7 @@ namespace ObjectMaster {
 				if (GUILayout.Button("Find & Replace Objects")) {
 					// Get existing open window or if none, make a new one:
 					FindReplaceObjects window = (FindReplaceObjects)EditorWindow.GetWindow(typeof(FindReplaceObjects));
-					#if UNITY_4_6
+					#if UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5_0
 					window.title = "Replace Objects";
 					#else
 					window.titleContent = new GUIContent ("Replace Objects");
@@ -274,7 +271,7 @@ namespace ObjectMaster {
 				if (GUILayout.Button("Rename Master")) {
 					// Get existing open window or if none, make a new one:
 					RenameMaster window = (RenameMaster)EditorWindow.GetWindow(typeof(RenameMaster));
-					#if UNITY_4_6
+					#if UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5_0
 					window.title = "Rename";
 					#else
 					window.titleContent = new GUIContent ("Rename");
@@ -404,41 +401,28 @@ namespace ObjectMaster {
 				GUILayout.Label("Links");
 
 				GUILayout.BeginHorizontal ();
-				if (GUILayout.Button ("Asset Store Page")) {
+				if (GUILayout.Button ("Store Page")) {
 					Application.OpenURL("http://bit.ly/1jxh6Uo");
 				}
-				if (GUILayout.Button ("Company Website")) {
+				if (GUILayout.Button ("Website")) {
 					Application.OpenURL("http://bit.ly/1W0XrrN");
 				}
 				GUILayout.EndHorizontal ();
 
 				GUILayout.BeginHorizontal ();
-				if (GUILayout.Button ("Forum Thread")) {
+				if (GUILayout.Button ("Forum")) {
 					Application.OpenURL("http://bit.ly/1NkqN27");
 				}
 				if (GUILayout.Button ("Intro Video")) {
 					Application.OpenURL("http://bit.ly/1GP9bq9");
 				}
 				
-			
 				GUILayout.EndHorizontal ();
 				GUILayout.EndVertical();
 			}
 			#endregion
 
 			GUILayout.EndScrollView ();
-		}
-
-		#endregion
-
-		#region Utility
-
-		string BoolToPlus(bool val) {
-			if (val) {
-				return "- ";
-			} else {
-				return "+ ";
-			}
 		}
 
 		#endregion
