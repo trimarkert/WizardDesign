@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour {
 	public string rightStickVertAxis = "Vertical2";
 	public float speed = 10.0f;
 	public string weapon = "";
-	public float damageDelay = 2.0f;
+	public float damageDelay = 2.5f;
 	public ParticleSystem shield;
 	public GameObject fireIcon;
 	public GameObject iceIcon;
@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour {
 	{
 		fireIcon = GameObject.Find("FireIcon");
 		iceIcon = GameObject.Find("IceIcon");
+		Invulnerability();
 	}
 	
 	// Update is called once per frame
@@ -78,22 +79,23 @@ public class PlayerController : MonoBehaviour {
 		{
 			if(canBeHit)
 			{
-				canBeHit = false;
+				//play invilnerability animation
+				Invulnerability();
 				//failsafe against not having simpleHealth for some reason
 				if(gameObject.GetComponent<SimpleHealth>())
 				{
 					//Damage character by 1, may be updated to be based on attack damage
 					gameObject.GetComponent<SimpleHealth>().Damage(1);
-					//play invilnerability animation
-					invulnerability();
+
 				}
 			}
 		}
 	}
 
 	//Makes the character invulnerable for a set amount of time damagedelay.
-	void invulnerability()
+	void Invulnerability()
 	{
+		canBeHit = false;
 		shield.Play();
 		//Makes it so the player can get hit again
 		Invoke("ResetHit", damageDelay);

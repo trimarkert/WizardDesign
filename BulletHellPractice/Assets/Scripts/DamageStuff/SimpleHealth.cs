@@ -4,18 +4,23 @@ using System.Collections;
 public class SimpleHealth : MonoBehaviour {
 	//The health that the spawned character starts with
 	public int initialHealth = 3;
-	//the current health of the character, only public for display reasons.
-	public int curHealth;
 	//The amount of score this character is worth (want to add more variety than just 1 point goblins
 	public int scoreValue = 1;
+	//the current health of the character, only public for display reasons.
+	private int curHealth;
 
-	// initialization stuff
+
+	/**
+	 * Sets current health to initial health upon creation.
+	 * */
 	void Start () {
 	
 		curHealth = initialHealth;
 	}
 	
-	// Anyone can call this when they damage the character
+	/**
+	 * Executes when something damages the character.
+	 * */
 	public void Damage (int dmgAmount) {
 
 		curHealth -= dmgAmount;
@@ -26,7 +31,9 @@ public class SimpleHealth : MonoBehaviour {
 	
 	}
 
-	//Kills the instance and adds to the score
+	/**
+	 * Updates appropriate values before removing character.
+	 * */
 	void Die()
 	{
 
@@ -35,5 +42,11 @@ public class SimpleHealth : MonoBehaviour {
 			ScoreManager.managerInstance.score += scoreValue;
 		}
 		Destroy(gameObject);
+	}
+	/**
+	 * 
+	 * */
+	public int GetHealth(){
+		return curHealth;
 	}
 }

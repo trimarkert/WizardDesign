@@ -6,11 +6,14 @@ public class PlayExplosion : MonoBehaviour {
 	public GameObject geometryParent;
 	//Explision particles
 	public ParticleSystem targetParticles;
+	//Rate at which character changes size when near player
+	public float sizeChangeRate = 0.1f;
+	//Max scale values for model before it explodes
+	public float maxSize = 2.5f;
 	//How close the character has to be to the player for the bomb to charge up.
 	public float minRange = 10.0f;
 	//How hard the explosion hits
 	public float explosionForce = 10.0f;
-
 	//Not sure how this one works yet
 	public float explosionRadius = 10.0f;
 	//The animator that will increase the size of the hitbox
@@ -39,18 +42,23 @@ public class PlayExplosion : MonoBehaviour {
 
 	void Update()
 	{
-
-
-			if(GameObject.FindGameObjectWithTag("Player"))
+		if(GameObject.FindGameObjectWithTag("Player"))
+		{
+			GameObject tempPlayer = GameObject.FindGameObjectWithTag("Player");
+			if(Vector3.Distance(transform.position, tempPlayer.transform.position) <= minRange)
 			{
-				GameObject tempPlayer = GameObject.FindGameObjectWithTag("Player");
-				if(Vector3.Distance(transform.position, tempPlayer.transform.position) <= minRange)
-				{
-					//Logic for changing the color of the model or whatever else will indicate getting closer to the explosion
-					//For now just gonna be interal number going up
-					
-				}
+				//Logic for changing the color of the model or whatever else will indicate getting closer to the explosion
+				//For now just gonna be interal number going up
+				float curSize = transform.localScale.x;
+				float nexSize = curSize + sizeChangeRate * Time.deltaTime;
+				transform.localScale = new Vector3(nexSize, nexSize, nexSize);
+				
 			}
+		}
+		if(transform.localScale.x >= maxSize)
+		{
+			playExplosion();
+		}
 	}
 
 	/**

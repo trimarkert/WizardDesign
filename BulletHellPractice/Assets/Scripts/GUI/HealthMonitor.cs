@@ -20,7 +20,7 @@ public class HealthMonitor : MonoBehaviour
 			if(playerRef.GetComponent<SimpleHealth>() != null)
 			{
 				GetComponent<Text>().text = "Cur Health: " 
-					+ playerRef.GetComponent<SimpleHealth>().curHealth.ToString();
+					+ playerRef.GetComponent<SimpleHealth>().GetHealth();
 			}
 		}
 			else
