@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayExplosion : MonoBehaviour {
+public class GoblinBombController : MonoBehaviour {
 	//The parent object of the geometry of this character
 	public GameObject geometryParent;
 	//Explision particles

@@ -34,7 +34,11 @@ public class SweetWaveSpawner : MonoBehaviour {
 	private int nextWave = 0;
 
 	public Transform[] spawnPoints;
-
+	//The minnimum distance from the player any enemy should spawn
+	public float minSpawnDistance = 2.0f;
+	//The maximum distance from the player any enemy should spawn.
+	//should actually be set at "YourDesiredMax" - minSpawnDistance
+	public float maxSpawnDistance = 8.0f;
 	//The time to wait between each spawn wave
 	public float timeBetweenWaves = 2.0f;
 	//Used to count down to zero and then start the spawning process.
@@ -51,6 +55,7 @@ public class SweetWaveSpawner : MonoBehaviour {
 	public float finalSpawnDelay = 1f;
 	//When you complete the final wave this is triggered to signify the demo is done.
 	private bool finalDone = false;
+
 	void Start()
 	{
 		if(spawnPoints.Length == 0)
@@ -84,9 +89,7 @@ public class SweetWaveSpawner : MonoBehaviour {
 			{
 				//start spawing here
 				StartCoroutine(SpawnWave (waves[nextWave]));
-
 			}
-
 		}
 		else
 		{
@@ -165,8 +168,29 @@ public class SweetWaveSpawner : MonoBehaviour {
 	 * */
 	void SpawnEnemy(Transform _enemy)
 	{
-		Transform spawnPnt = spawnPoints[Random.Range(0, spawnPoints.Length)];
-		Instantiate (_enemy, spawnPnt.position, spawnPnt.rotation);
+		//Transform spawnPnt = spawnPoints[Random.Range(0, spawnPoints.Length)];
+		Vector2 rndUnitCircle = Random.insideUnitCircle;
+		Transform playerTrans = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+		Vector3 nexPosition = playerTrans.position;
+		if(rndUnitCircle.x > 0)
+		{
+			nexPosition.x = nexPosition.x + ((rndUnitCircle.x * maxSpawnDistance) + minSpawnDistance);
+		}
+		else
+		{
+			nexPosition.x = nexPosition.x + ((rndUnitCircle.x * maxSpawnDistance) - minSpawnDistance);
+		}
+		if(rndUnitCircle.y > 0)
+		{
+			nexPosition.z = nexPosition.z + (rndUnitCircle.y * maxSpawnDistance) + minSpawnDistance;
+		}
+		else
+		{
+			nexPosition.z = nexPosition.z + (rndUnitCircle.y * maxSpawnDistance) - minSpawnDistance;
+		}
+
+		//Might want to change this to look at player when they spawn
+		Instantiate (_enemy, nexPosition, Quaternion.identity);
 	}
 	/**
 	 * Spawns epic final wave. Currently spwans a mix of all enemy types from the waves available but 

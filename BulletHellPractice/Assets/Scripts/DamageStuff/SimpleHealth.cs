@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SimpleHealth : MonoBehaviour {
+public abstract class SimpleHealth : MonoBehaviour {
 	//The health that the spawned character starts with
 	public int initialHealth = 3;
 	//The amount of score this character is worth (want to add more variety than just 1 point goblins
 	public int scoreValue = 1;
 	//the current health of the character, only public for display reasons.
-	private int curHealth;
+	protected int curHealth;
+
+	protected abstract void Die();
+	public abstract void Damage(int dmgAmount);
 
 
 	/**
@@ -17,32 +20,15 @@ public class SimpleHealth : MonoBehaviour {
 	
 		curHealth = initialHealth;
 	}
-	
-	/**
-	 * Executes when something damages the character.
-	 * */
-	public void Damage (int dmgAmount) {
 
-		curHealth -= dmgAmount;
-		if(curHealth <=0)
-		{
-			Die();
-		}
-	
-	}
-
-	/**
-	 * Updates appropriate values before removing character.
-	 * */
-	void Die()
+	void Update()
 	{
-
-		if(gameObject.CompareTag("Enemy"))
+		if(curHealth <= 0)
 		{
-			ScoreManager.managerInstance.score += scoreValue;
+			Die ();
 		}
-		Destroy(gameObject);
 	}
+
 	/**
 	 * 
 	 * */
